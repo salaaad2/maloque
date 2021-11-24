@@ -29,7 +29,9 @@ main( void )
         { str[i] = ('a' + i); }
         i = -1;
         while (++i < 14)
-        { str[i] = ('k' + i); }
+        { str2[i] = ('k' + i); }
+        printf("str : [%s][%lu]\n", str, strlen(str));
+        printf("str2 : [%s][%lu]\n", str2, strlen(str2));
         printf("str : [%s][%lu]\n", str, strlen(str));
         printf("str2 : [%s][%lu]\n", str2, strlen(str2));
     } else {

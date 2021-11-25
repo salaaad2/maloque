@@ -15,8 +15,10 @@
 #define PG_LARGE PG_SIZE * 10000
 
 typedef struct s_mlc {
+    uint32_t left;
     uint32_t sz;
-    void * addr;
+    void * mapped;
+    struct s_mlc * next;
 } t_mlc;
 
 void  ft_free(void * ptr);

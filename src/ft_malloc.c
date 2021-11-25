@@ -27,13 +27,13 @@ m_alloc(void ** mapped, uint32_t m, uint32_t * left, uint32_t size)
 
     if (*left == 0) {
         *mapped = mmap(NULL, m, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0);
-        printf("%s\n", strerror(errno));
         ret = *mapped;
     } else {
         ret = (*mapped + (size + 1));
     }
     if (*mapped == MAP_FAILED || ret == MAP_FAILED)
     {
+        printf("%s\n", strerror(errno));
         return (NULL);
     }
     /*
@@ -69,10 +69,8 @@ ft_malloc(uint32_t size)
         m = PG_TINY;
         left = &tiny_left;
         mapped = &tiny_mapped;
-        write(1, "tiny \n", 6);
     } else {
         if ((size + small_left) < PG_SMALL / 10) {
-            write(1, "small\n", 6);
             m = PG_SMALL;
             left = &small_left;
             mapped = &small_mapped;

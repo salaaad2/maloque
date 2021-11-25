@@ -75,5 +75,6 @@ main( void )
     printf("=========VERIFY OVERLAP====== \n");
     printf("str allocated from tiny page : \n[%s][%lu]\n", strtiny, strlen(strtiny));
     printf("str allocated from small page : \n[%.20s][%lu]\n", strsmall, strlen(strsmall));
+    printf("=========VERIFY FREE====== \n");
     return (0);
 }

@@ -30,17 +30,16 @@ m_alloc(void ** mapped, uint32_t m, uint32_t * left, uint32_t size)
         printf("%s\n", strerror(errno));
         ret = *mapped;
     } else {
-        ret = (*mapped + size);
+        ret = (*mapped + (size + 1));
     }
     if (*mapped == MAP_FAILED || ret == MAP_FAILED)
     {
-        printf("%s\n", strerror(errno));
         return (NULL);
     }
     /*
     ** increase left
     */
-    *left += size;
+    *left += (size + 1);
     return (ret);
 }
 

@@ -11,7 +11,7 @@
 #endif
 
 #define PG_TINY PG_SIZE * 4
-#define PG_SMALL PG_SIZE * 8
+#define PG_SMALL PG_SIZE * 16
 #define PG_LARGE PG_SIZE * 16
 
 void  ft_free(void * ptr);

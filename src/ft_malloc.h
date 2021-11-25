@@ -10,9 +10,14 @@
 # define PG_SIZE 4096
 #endif
 
-#define PG_TINY PG_SIZE * 4
-#define PG_SMALL PG_SIZE * 16
-#define PG_LARGE PG_SIZE * 16
+#define PG_TINY PG_SIZE * 100
+#define PG_SMALL PG_SIZE * 1000
+#define PG_LARGE PG_SIZE * 10000
+
+typedef struct s_mlc {
+    uint32_t sz;
+    void * addr;
+} t_mlc;
 
 void  ft_free(void * ptr);
 void * ft_malloc(uint32_t size);

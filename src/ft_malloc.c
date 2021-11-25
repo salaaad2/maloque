@@ -16,6 +16,36 @@
 #include <stdio.h>
 #include <errno.h>
 
+static int32_t
+m_addrsize(void * addr, uint8_t init, uint8_t type)
+{
+    static t_mlc mlt[100];
+    static t_mlc mls[100];
+    static t_mlc mll[100];
+    t_mlc * ml;
+    uint32_t i;
+
+    if (type == 0)
+    {
+        ml = &mlt[0];
+    } else if (type == 1) {
+        ml = &mls[0];
+    } else {
+        ml = &mll[0];
+    }
+    i = 0;
+    if (init)
+    { ml = addr;
+      return (0); }
+
+    while (i < 100)
+    {
+        if (addr == ml[i].addr)
+        { return (ml[i].sz); }
+    }
+    return (-1);
+}
+
 static void *
 m_alloc(void ** mapped, uint32_t m, uint32_t * left, uint32_t size)
 {
@@ -65,12 +95,12 @@ ft_malloc(uint32_t size)
     /*
     ** which multiple of page size should we use ?
     */
-    if ((size + tiny_left) < PG_TINY / 10) {
+    if ((size + tiny_left) < PG_TINY) {
         m = PG_TINY;
         left = &tiny_left;
         mapped = &tiny_mapped;
     } else {
-        if ((size + small_left) < PG_SMALL / 10) {
+        if ((size + small_left) < PG_SMALL) {
             m = PG_SMALL;
             left = &small_left;
             mapped = &small_mapped;

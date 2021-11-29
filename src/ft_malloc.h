@@ -17,6 +17,7 @@
 typedef struct s_mlc {
     uint32_t left;
     uint32_t sz;
+    uint8_t type;
     void * mapped;
     struct s_mlc * next;
 } t_mlc;

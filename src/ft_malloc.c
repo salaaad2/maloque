@@ -7,6 +7,7 @@
 /*********************************/
 
 #include "ft_malloc.h"
+#include "m_structs.h"
 
 /*
 ** remove me
@@ -17,15 +18,21 @@
 #include <errno.h>
 
 static void *
-m_alloc(void ** mapped, uint32_t size, uint32_t m, t_mlc * mlc)
+m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {
     /*
     ** if memory region is not allocated,
     ** ask the kernel for a new one
     */
+    static t_mlc * head = NULL;
+    t_mlc * ptr = s_newnode();
     void * ret;
 
-    if (mlc->left == 0) {
+    if (head == NULL)
+    { head = s_getstruct(NULL); }
+
+    if (ptr->left == 0) {
+        printf("");
         *mapped = mmap(NULL, m, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0);
         ret = *mapped;
     } else {
@@ -39,8 +46,7 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m, t_mlc * mlc)
     /*
     ** increase left
     */
-    mlc->left += (size + 1);
-    mlc->size = size;
+    ptr->sz = size;
     return (ret);
 }
 
@@ -49,8 +55,7 @@ ft_malloc(uint32_t size)
 {
     static t_mlc mlc;
     uint32_t m;
-    uint32_t * left;
-    void ** mapped;
+    void * mapped;
 
     /*
     ** which multiple of page size should we use ?
@@ -64,5 +69,8 @@ ft_malloc(uint32_t size)
             m = PG_LARGE;
         }
     }
-    return (m_alloc(mapped, size, m, &mlc));
+    if (mlc.next == NULL) {
+        s_getstruct(&mlc);
+    }
+    return (m_alloc(&mapped, size, m));
 }

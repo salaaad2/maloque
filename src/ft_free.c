@@ -11,23 +11,23 @@
 
 #include <stdio.h>
 
-void
-ft_free(void * ptr)
-{
-    t_mlc * tmp = NULL;
-    int ret;
+/* void */
+/* ft_free(void * ptr) */
+/* { */
+/*     t_mlc * tmp = NULL; */
+/*     int ret; */
 
-    ret = 0;
-    if (ptr == NULL)
-    { return ; }
+/*     ret = 0; */
+/*     if (ptr == NULL) */
+/*     { return ; } */
 
-    tmp = s_getnode(ptr);
-    if (tmp != NULL)
-    {
-        printf("tmp->sz [%u]\n", tmp->sz);
-        ret = munmap(ptr, tmp->sz);
-    }
+/*     tmp = s_getnode(ptr); */
+/*     if (tmp != NULL) */
+/*     { */
+/*         printf("tmp->sz [%u]\n", tmp->sz); */
+/*         ret = munmap(ptr, tmp->sz); */
+/*     } */
 
-    if (ret != 0)
-    { printf("munmap() failed\n"); }
-}
+/*     if (ret != 0) */
+/*     { printf("munmap() failed\n"); } */
+/* } */

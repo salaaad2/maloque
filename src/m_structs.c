@@ -1,6 +1,6 @@
 /*********************************/
 /*   FT_MALLOC        (  //      */
-/*   malloc()          ( )/      */
+/*   structs           ( )/      */
 /*   by salade         )(/       */
 /*  ________________  ( /)       */
 /* ()__)____________)))))   :^}  */
@@ -25,7 +25,7 @@ s_getstruct(t_mlc * mlc)
         ptr = mlc;
         ptr->t_left = 0;
         ptr->s_left = 0;
-        ptr->l_left = 0;
+        ptr->t_left = 0;
         ptr->left = &ptr->t_left;
     } else {
         printf("return static ptr\n");
@@ -33,58 +33,113 @@ s_getstruct(t_mlc * mlc)
     return (ptr);
 }
 
-/*
-** create a node on the stack.
-** place it at the end of the global struct
-*/
-t_mlc *
-s_newnode( t_mlc * head )
+
+int
+u_lstsize(t_mlc *lst)
 {
-    t_mlc * ptr;
-    t_mlc new;
+    int	i;
 
-    ptr = head;
-    printf("new node --\nhead size : %d\n", head->sz);
-    bzero(&new, sizeof(t_mlc));
-    while (ptr->next != NULL) {
-        ptr = ptr->next;
-    }
-    ptr->next = &new;
-    return (ptr->next);
-}
-
-/*
-** get node from address
-** this is useful for free and realloc
-*/
-t_mlc *
-s_getnode(void * addr)
-{
-    t_mlc * ptr;
-    int i;
-
+    if (lst == NULL)
+        return (0);
     i = 0;
-    ptr = s_getstruct(NULL);
-    while (ptr->next)
+    while (lst != NULL)
     {
-        if (ptr->mapped == addr) {
-            break ;
-        }
+        lst = lst->next;
         i++;
-        ptr = ptr->next;
     }
-    return (ptr);
+    return (i);
 }
 
-t_mlc *
-s_getlast( void )
+t_mlc	*
+u_lstlast(t_mlc *lst)
 {
-    t_mlc * ptr;
-
-    ptr = s_getstruct(NULL);
-    while (ptr->next)
+    if (lst == NULL)
     {
-        ptr = ptr->next;
+        return (NULL);
     }
-    return (ptr);
+    while (lst->next != NULL)
+    {
+        lst = lst->next;
+    }
+    return (lst);
+}
+
+int
+u_lstswap(t_mlc * one, t_mlc * two)
+{
+    one->next = two->next;
+    two->next = one;
+    return (0);
+}
+
+
+void	u_lstdelone(t_mlc *lst, void (*del)(void *))
+{
+    if (lst != NULL)
+    {
+        del(lst->mapped);
+        free(lst);
+    }
+}
+
+void	u_lstclear(t_mlc **lst, void (*del)(void *))
+{
+    t_mlc	*tmp;
+    t_mlc	*renext;
+
+    if (lst == NULL)
+    {
+        return ;
+    }
+    tmp = *lst;
+    while (tmp != NULL)
+    {
+        renext = tmp->next;
+        del(tmp->mapped);
+        free(tmp);
+        tmp = renext;
+    }
+    *lst = NULL;
+}
+
+void	u_lstadd_front(t_mlc **alst, t_mlc *new)
+{
+    if (alst == NULL || new == NULL)
+    {
+        return ;
+    }
+    new->next = *alst;
+    *alst = new;
+}
+
+void	u_lstadd_back(t_mlc **alst, t_mlc *new)
+{
+    t_mlc	*tmp;
+
+    if (alst == NULL || new == NULL)
+    {
+        return ;
+    }
+    if (*alst == NULL)
+    {
+        *alst = new;
+    }
+    else
+    {
+        tmp = u_lstlast(*alst);
+        tmp->next = new;
+    }
+}
+
+t_mlc	*u_lstnew( void )
+{
+    t_mlc	*nlst;
+
+    nlst = (t_mlc*)calloc(1, sizeof(t_mlc));
+    if (nlst == NULL)
+    {
+        return (NULL);
+    }
+    nlst->next = NULL;
+    return (nlst);
 }

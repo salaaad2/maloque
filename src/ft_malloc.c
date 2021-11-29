@@ -21,7 +21,7 @@ static void *
 m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {
     t_mlc * head;
-    t_mlc * ptr;
+    t_mlc new;
     void * ret;
 
     /*
@@ -30,7 +30,7 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
      */
 
     head = s_getstruct(NULL);
-    ptr = s_newnode(head);
+    u_lstadd_back(&head, &new);
 
     /*
     ** if memory region is not allocated, in selected range
@@ -52,10 +52,9 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
     ** set ptr type, size
     */
     *head->left += size;
-    ptr->next = NULL;
-    ptr->mapped = *mapped;
-    ptr->sz = size;
-    ptr->type = m;
+    new.mapped = *mapped;
+    new.sz = size;
+    new.type = m;
     return (ret);
 }
 

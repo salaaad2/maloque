@@ -16,14 +16,14 @@ void *
 test_alloc(int32_t size, uint8_t c)
 {
     char * str;
-    /* char * str2; */
+    char * str2;
     char * rstr;
     char * rstr2;
     int32_t i;
 
     i = -1;
     str = ft_malloc(size);
-    /* str2 = ft_malloc(size + 4); */
+    str2 = ft_malloc(size + 4);
     rstr = malloc(size);
     rstr2 = malloc(size + 4);
     if (str != NULL)
@@ -37,10 +37,10 @@ test_alloc(int32_t size, uint8_t c)
         while (++i < size)
         { str[i] = c; }
         i = -1;
-        /* while (++i < (size * 2)) */
-        /* { str2[i] = c + 1; } */
+        while (++i < (size + 4))
+        { str2[i] = c + 1; }
         printf("str : [%.20s][%lu]\n", str, strlen(str));
-        /* printf("str2 : [%.20s][%lu]\n", str2, strlen(str2)); */
+        printf("str2 : [%.20s][%lu]\n", str2, strlen(str2));
         printf("str : [%.20s][%lu]\n", str, strlen(str));
         printf("rstr : [%.20s][%lu]\n", rstr, strlen(rstr));
         printf("rstr2 : [%.20s][%lu]\n", rstr2, strlen(rstr2));
@@ -58,7 +58,7 @@ int
 main( void )
 {
     char * strtiny;
-    /* char * strsmall; */
+    char * strsmall;
     printf("=========FT_MALLOC=======\nTINY:%u\nSMALL:%u\nLARGE:%u\n", PG_TINY, PG_SMALL, PG_LARGE);
     printf("---------------TINY      : -------------\n");
     if ((strtiny = test_alloc(12, 'a')) == NULL)
@@ -66,15 +66,15 @@ main( void )
       return (1); }
     printf("---------------END TINY  : -------------\n");
 
-    /* printf("---------------SMALL     : -------------\n"); */
-    /* if ((strsmall = test_alloc(2000, 'k')) == NULL) */
-    /* { printf("small tests failed\n"); */
-    /*   return (1); } */
-    /* printf("---------------END SMALL : -------------\n"); */
+    printf("---------------SMALL     : -------------\n");
+    if ((strsmall = test_alloc(2000, 'k')) == NULL)
+    { printf("small tests failed\n");
+      return (1); }
+    printf("---------------END SMALL : -------------\n");
 
-    /* printf("=========VERIFY OVERLAP====== \n"); */
-    /* printf("str allocated from tiny page : \n[%s][%lu]\n", strtiny, strlen(strtiny)); */
-    /* printf("str allocated from small page : \n[%.20s][%lu]\n", strsmall, strlen(strsmall)); */
-    /* printf("=========VERIFY FREE====== \n"); */
+    printf("=========VERIFY OVERLAP====== \n");
+    printf("str allocated from tiny page : \n[%s][%lu]\n", strtiny, strlen(strtiny));
+    printf("str allocated from small page : \n[%.20s][%lu]\n", strsmall, strlen(strsmall));
+    printf("=========VERIFY FREE====== \n");
     return (0);
 }

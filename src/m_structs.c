@@ -8,6 +8,8 @@
 
 #include "m_structs.h"
 
+#include <stdio.h>
+
 /*
 ** keep struct in memory for klater use.
 ** this is a fake global variable
@@ -17,10 +19,18 @@ s_getstruct(t_mlc * mlc)
 {
     static t_mlc * ptr = NULL;
 
-    if (mlc != NULL) {
+    printf("call to get\n");
+    if (ptr == NULL) {
+        printf("setstruct(%u)\n", mlc->sz);
         ptr = mlc;
+        ptr->t_left = 0;
+        ptr->s_left = 0;
+        ptr->l_left = 0;
+        ptr->left = &ptr->t_left;
+    } else {
+        printf("return static ptr\n");
     }
-    return (mlc);
+    return (ptr);
 }
 
 /*

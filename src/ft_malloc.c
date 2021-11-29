@@ -20,19 +20,30 @@
 static void *
 m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {
-    /*
-    ** if memory region is not allocated,
-    ** ask the kernel for a new one
-    */
     static t_mlc * head = NULL;
-    t_mlc * ptr = s_newnode();
+    t_mlc * ptr;
     void * ret;
 
-    if (head == NULL)
-    { head = s_getstruct(NULL); }
+    /*
+    ** keep pointer to head to remember space left for
+    ** each region (tiny, small, large)
+     */
+    if (head == NULL) {
+        printf("head\n");
+        head = s_getstruct(NULL);
+        ptr = head;
+    } else {
+        printf("new node\n");
+        s_newnode();
+        ptr = s_getlast();
+    }
 
-    if (ptr->left == 0) {
-        printf("");
+    /*
+    ** if memory region is not allocated, in selected range
+    ** ask the kernel for a new one
+    */
+    if (*head->left == 0) {
+        printf("mmap(%u)\n", m);
         *mapped = mmap(NULL, m, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0);
         ret = *mapped;
     } else {
@@ -44,9 +55,10 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
         return (NULL);
     }
     /*
-    ** increase left
+    ** set ptr type, size
     */
     ptr->sz = size;
+    ptr->type = m;
     return (ret);
 }
 
@@ -62,11 +74,14 @@ ft_malloc(uint32_t size)
     */
     if (size < PG_TINY) {
         m = PG_TINY;
+        mlc.left = &mlc.t_left;
     } else {
         if (size < PG_SMALL) {
             m = PG_SMALL;
+            mlc.left = &mlc.s_left;
         } else {
             m = PG_LARGE;
+            mlc.left = &mlc.s_left;
         }
     }
     if (mlc.next == NULL) {

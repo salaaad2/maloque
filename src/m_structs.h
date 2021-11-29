@@ -6,5 +6,6 @@
 t_mlc * s_newnode( void );
 t_mlc * s_getnode(void * addr);
 t_mlc * s_getstruct(t_mlc * mlc);
+t_mlc * s_getlast( void );
 
 #endif

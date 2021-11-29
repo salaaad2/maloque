@@ -34,8 +34,8 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
         ptr = head;
     } else {
         printf("new node\n");
-        s_newnode();
-        ptr = s_getlast();
+        ptr = s_newnode();
+
     }
 
     /*

@@ -9,6 +9,7 @@
 #include "m_structs.h"
 
 #include <stdio.h>
+#include <strings.h>
 
 /*
 ** keep struct in memory for klater use.
@@ -43,8 +44,11 @@ s_newnode( void )
     t_mlc * ptr;
     t_mlc new;
 
+    printf("new node\n");
+    bzero(&new, sizeof(t_mlc));
     ptr = s_getstruct(NULL);
     while (ptr) {
+        printf("one step closer to the last\n");
         ptr = ptr->next;
     }
     ptr = &new;
@@ -59,13 +63,17 @@ t_mlc *
 s_getnode(void * addr)
 {
     t_mlc * ptr;
+    int i;
 
+    i = 0;
     ptr = s_getstruct(NULL);
     while (ptr->next)
     {
         if (ptr->mapped == addr) {
             break ;
         }
+        printf("%d th element\n", i);
+        i++;
         ptr = ptr->next;
     }
     return (ptr);

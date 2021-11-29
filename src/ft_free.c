@@ -7,19 +7,27 @@
 /*********************************/
 
 #include "ft_malloc.h"
+#include "m_structs.h"
+
 #include <stdio.h>
 
 void
 ft_free(void * ptr)
 {
-    int  ret;
+    t_mlc * tmp;
+    int ret;
 
     ret = 0;
     if (ptr == NULL)
     { return ; }
 
-    printf("%lu\n", sizeof(ptr));
-    ret = munmap(ptr, sizeof(ptr));
+    tmp = s_getnode(ptr);
+    if (tmp != NULL)
+    {
+        printf("tmp->sz [%u]\n", tmp->sz);
+        ret = munmap(ptr, tmp->sz);
+    }
+
     if (ret != 0)
-        return;
+    { return ; }
 }

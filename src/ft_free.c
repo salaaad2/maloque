@@ -14,7 +14,7 @@
 void
 ft_free(void * ptr)
 {
-    t_mlc * tmp;
+    t_mlc * tmp = NULL;
     int ret;
 
     ret = 0;
@@ -29,5 +29,5 @@ ft_free(void * ptr)
     }
 
     if (ret != 0)
-    { return ; }
+    { printf("munmap() failed\n"); }
 }

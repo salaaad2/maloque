@@ -20,7 +20,6 @@ s_getstruct(t_mlc * mlc)
 {
     static t_mlc * ptr = NULL;
 
-    printf("call to get\n");
     if (ptr == NULL) {
         printf("setstruct(%u)\n", mlc->sz);
         ptr = mlc;
@@ -39,20 +38,19 @@ s_getstruct(t_mlc * mlc)
 ** place it at the end of the global struct
 */
 t_mlc *
-s_newnode( void )
+s_newnode( t_mlc * head )
 {
     t_mlc * ptr;
     t_mlc new;
 
-    printf("new node\n");
+    ptr = head;
+    printf("new node --\nhead size : %d\n", head->sz);
     bzero(&new, sizeof(t_mlc));
-    ptr = s_getstruct(NULL);
-    while (ptr) {
-        printf("one step closer to the last\n");
+    while (ptr->next != NULL) {
         ptr = ptr->next;
     }
-    ptr = &new;
-    return (ptr);
+    ptr->next = &new;
+    return (ptr->next);
 }
 
 /*
@@ -72,7 +70,6 @@ s_getnode(void * addr)
         if (ptr->mapped == addr) {
             break ;
         }
-        printf("%d th element\n", i);
         i++;
         ptr = ptr->next;
     }

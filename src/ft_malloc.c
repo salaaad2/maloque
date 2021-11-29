@@ -20,7 +20,7 @@
 static void *
 m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {
-    static t_mlc * head = NULL;
+    t_mlc * head;
     t_mlc * ptr;
     void * ret;
 
@@ -28,15 +28,9 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
     ** keep pointer to head to remember space left for
     ** each region (tiny, small, large)
      */
-    if (head == NULL) {
-        printf("head\n");
-        head = s_getstruct(NULL);
-        ptr = head;
-    } else {
-        printf("new node\n");
-        ptr = s_newnode();
 
-    }
+    head = s_getstruct(NULL);
+    ptr = s_newnode(head);
 
     /*
     ** if memory region is not allocated, in selected range
@@ -57,6 +51,9 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
     /*
     ** set ptr type, size
     */
+    *head->left += size;
+    ptr->next = NULL;
+    ptr->mapped = *mapped;
     ptr->sz = size;
     ptr->type = m;
     return (ret);
@@ -85,6 +82,7 @@ ft_malloc(uint32_t size)
         }
     }
     if (mlc.next == NULL) {
+        printf("before init\n");
         s_getstruct(&mlc);
     }
     return (m_alloc(&mapped, size, m));

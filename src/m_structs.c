@@ -11,29 +11,6 @@
 #include <stdio.h>
 #include <strings.h>
 
-/*
-** keep struct in memory for klater use.
-** this is a fake global variable
-*/
-t_mlc *
-s_getstruct(t_mlc * mlc)
-{
-    static t_mlc * ptr = NULL;
-
-    if (ptr == NULL) {
-        printf("setstruct(%u)\n", mlc->sz);
-        ptr = mlc;
-        ptr->t_left = 0;
-        ptr->s_left = 0;
-        ptr->t_left = 0;
-        ptr->left = &ptr->t_left;
-    } else {
-        printf("return static ptr\n");
-    }
-    return (ptr);
-}
-
-
 int
 u_lstsize(t_mlc *lst)
 {
@@ -56,6 +33,8 @@ u_lstlast(t_mlc *lst)
     if (lst == NULL)
     {
         return (NULL);
+    } else if (lst->next == NULL) {
+        return (lst);
     }
     while (lst->next != NULL)
     {
@@ -126,6 +105,7 @@ void	u_lstadd_back(t_mlc **alst, t_mlc *new)
     }
     else
     {
+        printf("lstlast (%p)\n", *alst);
         tmp = u_lstlast(*alst);
         tmp->next = new;
     }

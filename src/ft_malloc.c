@@ -17,26 +17,26 @@
 #include <stdio.h>
 #include <errno.h>
 
+t_mlc * g_head;
+
 static void *
 m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {
-    t_mlc * head;
     t_mlc new;
     void * ret;
 
     /*
-    ** keep pointer to head to remember space left for
+    ** keep pointer to g_head to remember space left for
     ** each region (tiny, small, large)
      */
 
-    head = s_getstruct(NULL);
-    u_lstadd_back(&head, &new);
+    u_lstadd_back(&g_head, &new);
 
     /*
     ** if memory region is not allocated, in selected range
     ** ask the kernel for a new one
     */
-    if (*head->left == 0) {
+    if (*g_head->left == 0) {
         printf("mmap(%u)\n", m);
         *mapped = mmap(NULL, m, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0);
         ret = *mapped;
@@ -51,7 +51,7 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
     /*
     ** set ptr type, size
     */
-    *head->left += size;
+    *g_head->left += size;
     new.mapped = *mapped;
     new.sz = size;
     new.type = m;
@@ -61,7 +61,7 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
 void *
 ft_malloc(uint32_t size)
 {
-    static t_mlc mlc;
+    t_mlc mlc = {0, 0, 0, NULL, 0, 0, NULL, NULL};
     uint32_t m;
     void * mapped;
 
@@ -80,9 +80,11 @@ ft_malloc(uint32_t size)
             mlc.left = &mlc.s_left;
         }
     }
-    if (mlc.next == NULL) {
-        printf("before init\n");
-        s_getstruct(&mlc);
+    if (g_head == NULL) {
+        printf("head is now mlc(%p). init\n", g_head);
+        g_head = &mlc;
+    } else {
+        printf("second call (%p). init\n", g_head);
     }
     return (m_alloc(&mapped, size, m));
 }

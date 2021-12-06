@@ -78,9 +78,9 @@ main( void )
     printf("=========VERIFY FREE ( SIGSEGV )====== \n");
     printf("str allocated from tiny page is located at\n[%p][%lu]\n", strtiny, strlen(strtiny));
     printf("str allocated from small page is located at\n[%p][%lu]\n", strsmall, strlen(strsmall));
-    /* ft_free(strtiny); */
+    ft_free(strtiny);
     /* ft_free(strsmall); */
-    printf("SEGV NOW :\n[%.20s]\n", strtiny);
-    printf("SEGV NOW :\n[%.20s]\n", strsmall);
+    /* printf("SEGV NOW :\n[%.20s]\n", strtiny); */
+    /* printf("SEGV NOW :\n[%.20s]\n", strsmall); */
     return (0);
 }

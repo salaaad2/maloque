@@ -35,7 +35,7 @@ ifeq (${OS}, FreeBSD)
 CC				 = cc
 endif
 ifeq (${OS}, Linux)
-CC				 = clang
+CC				 = gcc
 endif
 ifeq (${OS}, Darwin)
 CC				 = cc
@@ -66,16 +66,16 @@ $(NAME): ${OBJS}
 #------------------------------------------------------------------------------#
 all: ${OBJS_DIR} ${NAME}
 #------------------------------------------------------------------------------#
-debug: CFLAGS += -glldb
+debug: CFLAGS += -g3
 debug: LFTRULE = debug
 debug: all
 #------------------------------------------------------------------------------#
-asan: CFLAGS += -glldb
+asan: CFLAGS += -g3
 asan: CFLAGS += -fsanitize=address
 asan: LFTRULE = asan
 asan: all
 #------------------------------------------------------------------------------#
-msan: CFLAGS += -glldb
+msan: CFLAGS += -g3
 msan: CFLAGS += -fsanitize=memory
 msan: CFLAGS += -fsanitize-memory-track-origins
 msan: CFLAGS += -fno-common

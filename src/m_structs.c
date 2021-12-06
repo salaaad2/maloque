@@ -105,7 +105,6 @@ void	u_lstadd_back(t_mlc **alst, t_mlc *new)
     }
     else
     {
-        printf("lstlast (%p)\n", *alst);
         tmp = u_lstlast(*alst);
         tmp->next = new;
     }

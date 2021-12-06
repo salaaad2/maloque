@@ -19,6 +19,11 @@
 
 t_mlc * g_head;
 
+t_mlc * gethead( void )
+{
+    return (g_head);
+}
+
 static void *
 m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {

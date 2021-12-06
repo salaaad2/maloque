@@ -33,11 +33,10 @@ u_lstlast(t_mlc *lst)
     if (lst == NULL)
     {
         return (NULL);
-    } else if (lst->next == NULL) {
-        return (lst);
     }
     while (lst->next != NULL)
     {
+        printf("seek last\n");
         lst = lst->next;
     }
     return (lst);
@@ -52,7 +51,8 @@ u_lstswap(t_mlc * one, t_mlc * two)
 }
 
 
-void	u_lstdelone(t_mlc *lst, void (*del)(void *))
+void
+u_lstdelone(t_mlc *lst, void (*del)(void *))
 {
     if (lst != NULL)
     {
@@ -61,7 +61,8 @@ void	u_lstdelone(t_mlc *lst, void (*del)(void *))
     }
 }
 
-void	u_lstclear(t_mlc **lst, void (*del)(void *))
+void
+u_lstclear(t_mlc **lst, void (*del)(void *))
 {
     t_mlc	*tmp;
     t_mlc	*renext;
@@ -81,7 +82,8 @@ void	u_lstclear(t_mlc **lst, void (*del)(void *))
     *lst = NULL;
 }
 
-void	u_lstadd_front(t_mlc **alst, t_mlc *new)
+void
+u_lstadd_front(t_mlc **alst, t_mlc *new)
 {
     if (alst == NULL || new == NULL)
     {
@@ -91,7 +93,8 @@ void	u_lstadd_front(t_mlc **alst, t_mlc *new)
     *alst = new;
 }
 
-void	u_lstadd_back(t_mlc **alst, t_mlc *new)
+void
+u_lstadd_back(t_mlc **alst, t_mlc *new)
 {
     t_mlc	*tmp;
 
@@ -110,7 +113,8 @@ void	u_lstadd_back(t_mlc **alst, t_mlc *new)
     }
 }
 
-t_mlc	*u_lstnew( void )
+t_mlc *
+u_lstnew( void )
 {
     t_mlc	*nlst;
 

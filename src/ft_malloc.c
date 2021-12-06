@@ -24,18 +24,11 @@ t_mlc * gethead( void )
     return (g_head);
 }
 
-static void *
+void *
 m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {
-    t_mlc new;
+    t_mlc new = {0, 0, 0, NULL, 0, 0, NULL, NULL};
     void * ret;
-
-    /*
-    ** keep pointer to g_head to remember space left for
-    ** each region (tiny, small, large)
-     */
-
-    u_lstadd_back(&g_head, &new);
 
     /*
     ** if memory region is not allocated, in selected range
@@ -46,9 +39,10 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
         *mapped = mmap(NULL, m, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0);
         ret = *mapped;
     } else {
+        printf("mapped memory is still present on page\n");
         ret = (*mapped + (size + 1));
     }
-    if (*mapped == MAP_FAILED || ret == MAP_FAILED)
+    if (*mapped == MAP_FAILED)
     {
         printf("%s\n", strerror(errno));
         return (NULL);
@@ -57,16 +51,17 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
     ** set ptr type, size
     */
     *g_head->left += size;
-    new.mapped = *mapped;
+    new.mapped = ret;
     new.sz = size;
     new.type = m;
+    u_lstadd_back(&g_head, &new);
     return (ret);
 }
 
 void *
 ft_malloc(uint32_t size)
 {
-    t_mlc mlc = {0, 0, 0, NULL, 0, 0, NULL, NULL};
+    static t_mlc mlc = {0, 0, 0, NULL, 0, 0, NULL, NULL};
     uint32_t m;
     void * mapped;
 

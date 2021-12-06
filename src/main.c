@@ -26,6 +26,10 @@ test_alloc(int32_t size, uint8_t c)
     str2 = ft_malloc(size + 4);
     rstr = malloc(size);
     rstr2 = malloc(size + 4);
+    bzero(str, size);
+    bzero(str2, size + 4);
+    bzero(rstr, size);
+    bzero(rstr2, size + 4);
     if (str != NULL)
     {
         while (++i < size - 1)
@@ -42,9 +46,9 @@ test_alloc(int32_t size, uint8_t c)
         printf("str : [%.20s][%lu]\n", str, strlen(str));
         printf("str2 : [%.20s][%lu]\n", str2, strlen(str2));
         printf("str : [%.20s][%lu]\n", str, strlen(str));
-        printf("rstr : [%.20s][%lu]\n", rstr, strlen(rstr));
-        printf("rstr2 : [%.20s][%lu]\n", rstr2, strlen(rstr2));
-        printf("rstr : [%.20s][%lu]\n", rstr, strlen(rstr));
+        printf("rstr : [%s]\n", rstr);
+        printf("rstr2 : [%s\n", rstr2);
+        printf("rstr : [%s]\n", rstr);
     } else {
         printf("malloc() failed\n");
         return (NULL);

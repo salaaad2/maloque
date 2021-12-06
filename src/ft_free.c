@@ -24,7 +24,7 @@ getnode(void * ptr)
     if (tmp == NULL)
         return (NULL);
     while(tmp->next != NULL) {
-    printf("free this with head : (%p)\n", tmp);
+        printf("address : (%p) sz : %d\n", tmp, tmp->sz);
         tmp = tmp->next;
     }
     return (tmp);

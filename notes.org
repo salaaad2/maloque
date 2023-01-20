@@ -1,10 +1,19 @@
 #+TITLE: ft_malloc
 
+* all
+- obtenir la page exacte a partir d'une adresse renvoyee:
+->retenir dans g_head les differentes allocations
+
+head-> size left on tiny/small/large pages
+
+
+
 * malloc()
 3 page sizes
 return:
 if (spc_left_on_page > size)
-ret mmap_res + size
+    ret mmap_res + size
 else
+
 * free()
 * realloc()

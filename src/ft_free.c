@@ -19,7 +19,7 @@ getnode(void * ptr)
     t_mlc * tmp;
 
     (void)ptr;
-    tmp = gethead();
+    tmp = getHead();
     printf("free this with head : (%p)\n", tmp);
     if (tmp == NULL)
         return (NULL);

@@ -32,6 +32,17 @@ t_mlc * getHead( void )
     return (&g_head);
 }
 
+t_mlc * getTail( void )
+{
+    t_mlc * ptr = getHead();
+
+    while (ptr->next != NULL)
+    {
+        ptr = ptr->next;
+    }
+    return ptr;
+}
+
 static void *
 m_alloc(t_mlc * ptr, uint32_t size, uint32_t m)
 {
@@ -43,12 +54,24 @@ m_alloc(t_mlc * ptr, uint32_t size, uint32_t m)
     */
     if (*ptr->left == 0)
     {
-        ptr->mapped = mmap(NULL, m, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0);
+        ptr->mapped = mmap(
+            NULL,
+            m,
+            PROT_READ|PROT_WRITE,
+            MAP_PRIVATE|MAP_ANONYMOUS,
+            0,
+            0);
         ret = ptr->mapped;
     }
     else
     {
-        ret = (ptr->mapped + (size + 1));
+        t_mlc new_alloc = {0};
+        t_mlc * p = getTail();
+
+        new_alloc.mapped = ptr->mapped + (size + 1);
+        p->mapped = &new_alloc;
+
+        ret = (new_alloc.mapped);
     }
     if (ptr->mapped == MAP_FAILED)
     {
@@ -65,32 +88,32 @@ m_alloc(t_mlc * ptr, uint32_t size, uint32_t m)
 void *
 ft_malloc(uint32_t size)
 {
-    t_mlc* mlc;
+    t_mlc* head;
     uint32_t m;
 
-    mlc = getHead();
+    head = getHead();
     /*
     ** which multiple of page size should we use ?
     */
     if (size < PG_TINY)
     {
         m = PG_TINY;
-        mlc->left = &mlc->t_left;
+        head->left = &head->t_left;
     }
     else if (size < PG_SMALL)
     {
         m = PG_SMALL;
-        mlc->left = &mlc->s_left;
+        head->left = &head->s_left;
     }
     else
     {
         m = PG_LARGE;
-        mlc->left = &mlc->s_left;
+        head->left = &head->s_left;
     }
 
-    if (mlc == NULL)
+    if (head == NULL)
     {
         printf("Head could not be found\n");
     }
-    return (m_alloc(mlc, size, m));
+    return (m_alloc(head, size, m));
 }

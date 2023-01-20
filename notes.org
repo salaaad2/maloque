@@ -1,0 +1,10 @@
+#+TITLE: ft_malloc
+
+* malloc()
+3 page sizes
+return:
+if (spc_left_on_page > size)
+ret mmap_res + size
+else
+* free()
+* realloc()

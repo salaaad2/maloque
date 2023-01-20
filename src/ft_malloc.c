@@ -17,24 +17,32 @@
 #include <stdio.h>
 #include <errno.h>
 
-t_mlc * g_head;
+static t_mlc g_head = {
+    .t_left = 0,
+    .s_left = 0,
+    .l_left = 0,
+    .left =   NULL,
+    .sz =     0,
+    .type =   0,
+    .mapped = NULL,
+    .next =   NULL};
 
-t_mlc * gethead( void )
+t_mlc * getHead( void )
 {
-    return (g_head);
+    return (&g_head);
 }
 
-void *
+static void *
 m_alloc(void ** mapped, uint32_t size, uint32_t m)
 {
-    t_mlc new = {0, 0, 0, NULL, 0, 0, NULL, NULL};
     void * ret;
+    t_mlc * ptr = getHead();
 
     /*
     ** if memory region is not allocated, in selected range
     ** ask the kernel for a new one
     */
-    if (*g_head->left == 0) {
+    if (ptr->left == 0) {
         printf("mmap(%u)\n", m);
         *mapped = mmap(NULL, m, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0);
         ret = *mapped;
@@ -50,41 +58,37 @@ m_alloc(void ** mapped, uint32_t size, uint32_t m)
     /*
     ** set ptr type, size
     */
-    *g_head->left += size;
-    new.mapped = ret;
-    new.sz = size;
-    new.type = m;
-    u_lstadd_back(&g_head, &new);
+    ptr->left += size;
     return (ret);
 }
 
 void *
 ft_malloc(uint32_t size)
 {
-    static t_mlc mlc = {0, 0, 0, NULL, 0, 0, NULL, NULL};
+    t_mlc* mlc;
     uint32_t m;
     void * mapped;
 
+    mlc = getHead();
     /*
     ** which multiple of page size should we use ?
     */
     if (size < PG_TINY) {
         m = PG_TINY;
-        mlc.left = &mlc.t_left;
+        mlc->left = &mlc->t_left;
     } else {
         if (size < PG_SMALL) {
             m = PG_SMALL;
-            mlc.left = &mlc.s_left;
+            mlc->left = &mlc->s_left;
         } else {
             m = PG_LARGE;
-            mlc.left = &mlc.s_left;
+            mlc->left = &mlc->s_left;
         }
     }
-    if (g_head == NULL) {
-        printf("head is now mlc(%p). init\n", g_head);
-        g_head = &mlc;
+    if (mlc == NULL) {
+        printf("head is now mlc(%p). init\n", mlc);
     } else {
-        printf("second call (%p). init\n", g_head);
+        printf("second call (%p). init\n", mlc);
     }
     return (m_alloc(&mapped, size, m));
 }

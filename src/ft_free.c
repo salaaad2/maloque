@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 
-t_mlc * gethead( void );
+t_mlc * getHead( void );
 
 static t_mlc *
 getnode(void * ptr)

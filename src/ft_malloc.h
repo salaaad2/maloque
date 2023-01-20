@@ -8,6 +8,8 @@
 
 #ifdef __linux
 # define PG_SIZE 4096
+#else
+# define PG_SIZE 4096
 #endif
 
 #define PG_TINY PG_SIZE * 100

@@ -63,7 +63,7 @@ main( void )
 {
     char * strtiny;
     char * strsmall;
-    printf("=========FT_MALLOC=======\nTINY:%u\nSMALL:%u\nLARGE:%u\n", PG_TINY, PG_SMALL, PG_LARGE);
+    printf("=========FT_MALLOC=======\nSIZE:%d\nTINY:%u\nSMALL:%u\nLARGE:%u\n", getpagesize(), PG_TINY, PG_SMALL, PG_LARGE);
     printf("---------------TINY      : -------------\n");
     if ((strtiny = test_alloc(12, 'a')) == NULL)
     { printf("tiny tests failed\n");
